@@ -2,16 +2,16 @@ import tweepy
 import os
 from dotenv import load_dotenv
 
-# Lade die Umgebungsvariablen aus der .env-Datei
-load_dotenv('/var/opt/twitterbot/twitterbot.env')
+# Get the secrets loaded in from the .env file
+load_dotenv('/var/opt/twitter-gmgn-bot/twitterbot.env')
 
-# API-Schlüssel aus den Umgebungsvariablen laden
+# Get API-Keys loaded in
 api_key = os.getenv("API_KEY")
 api_secret_key = os.getenv("API_KEY_SECRET")
 access_token = os.getenv("ACCESS_TOKEN")
 access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
 
-# OAuth1-Authentifizierung
+# OAuth1-Auth
 client = tweepy.Client(
     consumer_key=api_key,
     consumer_secret=api_secret_key,
@@ -19,7 +19,7 @@ client = tweepy.Client(
     access_token_secret=access_token_secret
 )
 
-# Test-Tweet posten (API v2)
+# Post a Test-Tweet (API v2)
 try:
     response = client.create_tweet(text="Hello world! Posting with API v2.")
     print(f"Tweet successfully posted with ID: {response.data['id']}")

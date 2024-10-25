@@ -10,10 +10,10 @@ from datetime import datetime
 import pytz  # Time zone support
 
 # Load environment variables from '/var/opt/twitterbot/twitterbot.env'
-load_dotenv('/var/opt/twitterbot/twitterbot.env')
+load_dotenv('/var/opt/twitter-gmgn-bot/twitterbot.env')
 
 # Set the path for the log file
-log_file_path = "/var/opt/twitterbot/twitterbot.log"
+log_file_path = "/var/opt/twitter-gmgn-bot/twitterbot.log"
 
 # Function to log messages to both the console and the log file
 def log_message(message):
@@ -98,7 +98,7 @@ def generate_text(prompt):
     finally:
         process.terminate()
 
-# Function for a random delay to vary post timing
+# Function for a random delay to vary post timing - let's not look like a bot right away
 def random_delay(max_delay=1800):
     delay = random.randint(0, max_delay)
     log_message(f"Waiting for a random delay of {delay} seconds...")
@@ -106,19 +106,25 @@ def random_delay(max_delay=1800):
 
 # Consolidated function to handle both GM and GN posts with optional image, weather, and hashtags
 def post_with_details(post_type, image_folder, weather_info, extra_hashtags):
-    # Choose an image if folder is provided
+    # Choose an image if a folder is provided
     image_path = choose_random_image(image_folder)
-    
-    # Generate the prompt based on post type
+
+    # Generate the prompt based on post type, including weather if available
     if post_type.lower() == "gm":
-        prompt = f"Please generate a single casual good morning message with positivity, including the weather info: {weather_info}, no longer than 280 characters."
-    else:
-        prompt = f"Please generate a single good night message with a casual tone and mention memecoins. Keep it positive and casual, no longer than 280 characters."
-    
+        if weather_info:
+            prompt = f"Please generate a single casual good morning message with positivity, including the weather info: {weather_info}, no longer than 280 characters."
+        else:
+            prompt = "Please generate a single casual good morning message with positivity, no longer than 280 characters."
+    else:  # GN post
+        if weather_info:
+            prompt = f"Please generate a single unique good night message with a casual tone, mentioning memecoins and current weather info: {weather_info}. Keep it positive and casual, no longer than 280 characters."
+        else:
+            prompt = "Please generate a single unique good night message with a casual tone and mention of memecoins. Keep it positive and casual, no longer than 280 characters."
+
     # Generate text with LLaMA
     post_text = generate_text(prompt).strip('"() ') + " " + extra_hashtags
 
-    # Attempt to post with or without image
+    # Attempt to post with or without an image
     try:
         if image_path:
             log_message(f"Uploading image and posting {post_type} tweet...")
