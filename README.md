@@ -24,7 +24,13 @@ test it:
 
 ## get running
 
-Obviously clone my repo. I had it installed under "/var/opt/" so I hope I do not have too many direkt paths in the script, but you might want to check that first.
+Obviously clone my repo. I had it installed under "/var/opt/" so I hope I do not have too many direkt paths in the script,
+but you might want to check that first.
+
+If you have all your X (aka Twitter) API credentials dropped into the twitterbot.env file you may want to test your connection.
+This seemed to be taking some time in my case as I was not clear on APIv2 and APIv1 differences at first.
+
+Use the testpost.yp for that, it will help :)
 
 ### cron jobs
 
