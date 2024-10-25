@@ -1,6 +1,9 @@
 # ignore our env stuff
+.gitignore
 .env
 twitterbot.env
+gm-bilder/
+gn-bilder/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
