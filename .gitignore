@@ -1,3 +1,7 @@
+# ignore our env stuff
+.env
+twitterbot.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
