@@ -9,7 +9,7 @@ from subprocess import Popen, PIPE
 from datetime import datetime
 import pytz  # Time zone support
 
-# Load environment variables from '/var/opt/twitterbot/twitterbot.env'
+# Load environment variables from '/var/opt/twitter-gmgn-bot/twitterbot.env'
 load_dotenv('/var/opt/twitter-gmgn-bot/twitterbot.env')
 
 # Set the path for the log file
@@ -110,16 +110,19 @@ def post_with_details(post_type, image_folder, weather_info, extra_hashtags):
     image_path = choose_random_image(image_folder)
 
     # Generate the prompt based on post type, including weather if available
-    if post_type.lower() == "gm":
+    if post_type == "GM":
         if weather_info:
             prompt = f"Please generate a single casual good morning message with positivity, including the weather info: {weather_info}, no longer than 280 characters."
         else:
             prompt = "Please generate a single casual good morning message with positivity, no longer than 280 characters."
-    else:  # GN post
+    elif post_type == "GN":
         if weather_info:
             prompt = f"Please generate a single unique good night message with a casual tone, mentioning memecoins and current weather info: {weather_info}. Keep it positive and casual, no longer than 280 characters."
         else:
             prompt = "Please generate a single unique good night message with a casual tone and mention of memecoins. Keep it positive and casual, no longer than 280 characters."
+    else:
+        log_message("Invalid post type for generating text.")
+        return
 
     # Generate text with LLaMA
     post_text = generate_text(prompt).strip('"() ') + " " + extra_hashtags
@@ -142,10 +145,8 @@ def main():
     random_delay()
     weather_info = get_weather(location) if location else ""
 
-    if post_type == "GM":
-        post_with_details("Good morning", image_folder, weather_info, extra_hashtags)
-    elif post_type == "GN":
-        post_with_details("Good night", image_folder, weather_info, extra_hashtags)
+    if post_type in ["GM", "GN"]:
+        post_with_details(post_type, image_folder, weather_info, extra_hashtags)
     else:
         log_message("Invalid post type specified. Use 'GM' or 'GN'.")
 
