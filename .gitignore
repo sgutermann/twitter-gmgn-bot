@@ -1,6 +1,6 @@
 # ignore our env stuff
 .gitignore
-.env
+.idea/*
 twitterbot.env
 gm-bilder/
 gn-bilder/

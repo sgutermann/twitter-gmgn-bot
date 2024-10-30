@@ -86,7 +86,7 @@ def get_weather(location):
 def generate_text(prompt):
     log_message(f"Generating text with LLaMA for prompt: {prompt}")
     try:
-        process = Popen(["ollama", "run", "llama3.2:1b"], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        process = Popen(["/usr/local/bin/ollama", "run", "llama3.2:1b"], stdin=PIPE, stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate(input=prompt.encode(), timeout=60)
         if stderr:
             log_message(f"Error in LLaMA process: {stderr.decode().strip()}")
